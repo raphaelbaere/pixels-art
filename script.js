@@ -57,3 +57,19 @@ function definePixelBoardWidth(largura) {
 }
 definePixelBoardWidth('5');
 createPixelBoard('5');
+
+const colors = document.querySelectorAll(".color")
+
+for (let index of colors) {
+  index.addEventListener('click', () => {
+  removeSelected()
+  index.classList.add("selected")
+  })
+}
+
+function removeSelected() {
+  const colors = document.querySelectorAll(".color")
+  for (let index of colors) {
+    index.classList.remove("selected")
+  }
+}
