@@ -17,6 +17,16 @@ window.onload = () => {
       }
     }
   }
+  if (localStorage.getItem('pixelBoard')) {
+    let everyPixel = JSON.parse(localStorage.getItem('pixelBoard'));
+    let pixel = document.querySelectorAll('.pixel')
+    for (let index of pixel) {
+      console.log(everyPixel.hasOwnProperty(index.id))
+      if (everyPixel.hasOwnProperty(index.id)) {
+        index.style.backgroundColor = everyPixel[index.id]
+      }
+    }
+    }
 };
 
 function generateColor() {
@@ -46,6 +56,7 @@ function createPixelBoard(largura) {
   for (let index = 1; index <= larguraEmNumero * larguraEmNumero; index += 1) {
     const pixel = document.createElement('div');
     pixel.className = 'pixel';
+    pixel.id = index;
     pixelBoard.appendChild(pixel);
   }
 }
@@ -77,11 +88,15 @@ function removeSelected() {
   }
 }
 const selectPixel = document.querySelectorAll(".pixel")
+  const everyPixel = {};
   for (let index of selectPixel) {
   index.addEventListener("click", (event) => {
   let cadaPixel = event.target
   const selected = document.querySelector(".selected")
   cadaPixel.style.backgroundColor = selected.style.backgroundColor
+  let cadaPixelId = event.target.id;
+  everyPixel[cadaPixelId] = cadaPixel.style.backgroundColor;
+  localStorage.setItem('pixelBoard' , JSON.stringify(everyPixel))
 })
 }
 
