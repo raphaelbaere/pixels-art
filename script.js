@@ -61,9 +61,12 @@ createPixelBoard('5');
 const colors = document.querySelectorAll(".color")
 
 for (let index of colors) {
-  index.addEventListener('click', () => {
-  removeSelected()
-  index.classList.add("selected")
+  index.addEventListener('click', (event) => {
+  let cadaCor = event.target
+   removeSelected()
+   if (!cadaCor.classList.contains("selected")) {
+    cadaCor.classList.add("selected")
+   }
   })
 }
 
@@ -73,3 +76,20 @@ function removeSelected() {
     index.classList.remove("selected")
   }
 }
+const selectPixel = document.querySelectorAll(".pixel")
+  for (let index of selectPixel) {
+  index.addEventListener("click", (event) => {
+  let cadaPixel = event.target
+  const selected = document.querySelector(".selected")
+  cadaPixel.style.backgroundColor = selected.style.backgroundColor
+})
+}
+
+const buttonClearBoard = document.querySelector('#clear-board')
+
+buttonClearBoard.addEventListener('click', () => {
+  const selectPixel = document.querySelectorAll('.pixel')
+  for (let index of selectPixel) {
+    index.style.backgroundColor = "rgb(255,255,255)"
+  }
+})

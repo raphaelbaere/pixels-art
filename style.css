@@ -6,7 +6,7 @@ body {
   text-align: center;
 }
 
-header {
+header , #pixel-board-header {
   display: flex;
   justify-content: center;
 }
@@ -19,7 +19,7 @@ header {
   text-align: left;
 }
 
-#button-random-color {
+#button-random-color , #clear-board {
   margin-left: 20px;
   margin-top: 10px;
   width: 85px;
@@ -34,22 +34,6 @@ header {
   height: 100px;
   border-radius: 50%;
   display: inline-block;
-}
-
-.black {
-  background-color: black;
-}
-
-.red {
-  background-color: red;
-}
-
-.yellow {
-  background-color: yellow;
-}
-
-.blue {
-  background-color: blue;
 }
 
 .titulos {
