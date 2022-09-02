@@ -11,6 +11,26 @@ header , #pixel-board-header {
   justify-content: center;
 }
 
+#input-container {
+  margin-right: 100px;
+  display: flex;
+  justify-content: center;
+  margin-top: -15px;
+  margin-bottom: 15px;
+}
+
+#generate-board {
+  text-align: center;
+  height: 30px;
+  margin-top: 18px;
+}
+
+#board-size {
+  text-align: center;
+  height: 30px;
+  margin-top: 18px;
+}
+
 #pixel-board {
   width: 50px;
   display: flex;

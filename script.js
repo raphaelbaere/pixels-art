@@ -1,3 +1,38 @@
+function createPixelBoard(largura) {
+  const pixelBoard = document.querySelector('#pixel-board');
+  const larguraEmNumero = parseInt(largura, 10);
+  for (let index = 1; index <= larguraEmNumero * larguraEmNumero; index += 1) {
+    const pixel = document.createElement('div');
+    pixel.className = 'pixel';
+    pixel.id = index;
+    pixelBoard.appendChild(pixel);
+  }
+}
+
+function definePixelBoardWidth(largura) {
+  const larguraEmNumero = parseInt(largura, 10);
+  const pixelBoard = document.querySelector('#pixel-board');
+  pixelBoard.style.width = `${larguraEmNumero * 40}px`;
+}
+
+function selecionaPixel() {
+  return document.querySelectorAll('.pixel');
+}
+
+function pintaQuadradinho() {
+  const everyPixel = {};
+  for (const index of selecionaPixel()) {
+    index.addEventListener('click', (event) => {
+      const cadaPixel = event.target;
+      const selected = document.querySelector('.selected');
+      cadaPixel.style.backgroundColor = selected.style.backgroundColor;
+      const cadaPixelId = event.target.id;
+      everyPixel[cadaPixelId] = cadaPixel.style.backgroundColor;
+      localStorage.setItem('pixelBoard', JSON.stringify(everyPixel));
+    });
+  }
+}
+
 window.onload = () => {
   if (localStorage.getItem('colorPalette')) {
     const colors = document.querySelectorAll('.color');
@@ -17,16 +52,28 @@ window.onload = () => {
       }
     }
   }
+  if (localStorage.getItem('boardSize')) {
+    const boardSize = localStorage.getItem('boardSize');
+    definePixelBoardWidth(boardSize);
+    createPixelBoard(boardSize);
+    selecionaPixel();
+    pintaQuadradinho();
+  } else {
+    definePixelBoardWidth('5');
+    createPixelBoard('5');
+    selecionaPixel();
+    pintaQuadradinho();
+  }
   if (localStorage.getItem('pixelBoard')) {
-    let everyPixel = JSON.parse(localStorage.getItem('pixelBoard'));
-    let pixel = document.querySelectorAll('.pixel')
-    for (let index of pixel) {
-      console.log(everyPixel.hasOwnProperty(index.id))
+    const everyPixel = JSON.parse(localStorage.getItem('pixelBoard'));
+    const pixel = document.querySelectorAll('.pixel');
+    for (const index of pixel) {
+      console.log(everyPixel.hasOwnProperty(index.id));
       if (everyPixel.hasOwnProperty(index.id)) {
-        index.style.backgroundColor = everyPixel[index.id]
+        index.style.backgroundColor = everyPixel[index.id];
       }
     }
-    }
+  }
 };
 
 function generateColor() {
@@ -50,61 +97,67 @@ buttonRandomColor.addEventListener('click', () => {
   }
 });
 
-function createPixelBoard(largura) {
-  const pixelBoard = document.querySelector('#pixel-board');
-  const larguraEmNumero = parseInt(largura, 10);
-  for (let index = 1; index <= larguraEmNumero * larguraEmNumero; index += 1) {
-    const pixel = document.createElement('div');
-    pixel.className = 'pixel';
-    pixel.id = index;
-    pixelBoard.appendChild(pixel);
+function deletePixelBoard() {
+  const pixelBoard = document.querySelectorAll('.pixel');
+  for (const index of pixelBoard) {
+    index.remove();
   }
 }
 
-function definePixelBoardWidth(largura) {
-  const larguraEmNumero = parseInt(largura, 10);
-  const pixelBoard = document.querySelector('#pixel-board');
-  pixelBoard.style.width = `${larguraEmNumero * 40}px`;
-}
-definePixelBoardWidth('5');
-createPixelBoard('5');
+const inputss = document.querySelector('#board-size');
+const bottaoo = document.querySelector('#generate-board');
+bottaoo.addEventListener('click', () => {
+  if (inputss.value.length === 0) {
+    alert('Board inválido!');
+  }
+  deletePixelBoard();
+  if (inputss.value < 5) {
+    inputss.value = 5;
+  } else if (inputss.value > 50) {
+    inputss.value = 50;
+  }
+  localStorage.setItem('boardSize', inputss.value.toString());
+  definePixelBoardWidth(inputss.value);
+  createPixelBoard(inputss.value);
+  selecionaPixel();
+  pintaQuadradinho();
+});
 
-const colors = document.querySelectorAll(".color")
-
-for (let index of colors) {
-  index.addEventListener('click', (event) => {
-  let cadaCor = event.target
-   removeSelected()
-   if (!cadaCor.classList.contains("selected")) {
-    cadaCor.classList.add("selected")
-   }
-  })
-}
+const colors = document.querySelectorAll('.color');
 
 function removeSelected() {
-  const colors = document.querySelectorAll(".color")
-  for (let index of colors) {
-    index.classList.remove("selected")
+  for (const index of colors) {
+    index.classList.remove('selected');
   }
 }
-const selectPixel = document.querySelectorAll(".pixel")
-  const everyPixel = {};
-  for (let index of selectPixel) {
-  index.addEventListener("click", (event) => {
-  let cadaPixel = event.target
-  const selected = document.querySelector(".selected")
-  cadaPixel.style.backgroundColor = selected.style.backgroundColor
-  let cadaPixelId = event.target.id;
-  everyPixel[cadaPixelId] = cadaPixel.style.backgroundColor;
-  localStorage.setItem('pixelBoard' , JSON.stringify(everyPixel))
-})
+
+for (const index of colors) {
+  index.addEventListener('click', (event) => {
+    const cadaCor = event.target;
+    removeSelected();
+    if (!cadaCor.classList.contains('selected')) {
+      cadaCor.classList.add('selected');
+    }
+  });
 }
 
-const buttonClearBoard = document.querySelector('#clear-board')
+const everyPixel = {};
+for (const index of selecionaPixel()) {
+  index.addEventListener('click', (event) => {
+    const cadaPixel = event.target;
+    const selected = document.querySelector('.selected');
+    cadaPixel.style.backgroundColor = selected.style.backgroundColor;
+    const cadaPixelId = event.target.id;
+    everyPixel[cadaPixelId] = cadaPixel.style.backgroundColor;
+    localStorage.setItem('pixelBoard', JSON.stringify(everyPixel));
+  });
+}
 
+const buttonClearBoard = document.querySelector('#clear-board');
 buttonClearBoard.addEventListener('click', () => {
-  const selectPixel = document.querySelectorAll('.pixel')
-  for (let index of selectPixel) {
-    index.style.backgroundColor = "rgb(255,255,255)"
+  const selectPixel = document.querySelectorAll('.pixel');
+  localStorage.removeItem('pixelBoard');
+  for (const index of selectPixel) {
+    index.style.backgroundColor = 'rgb(255,255,255)';
   }
-})
+});
